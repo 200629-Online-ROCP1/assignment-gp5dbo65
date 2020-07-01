@@ -22,8 +22,15 @@ public class EvaluationService {
 
 		public static long toMilesPerHour(double kilometersPerHour) {
 			// TODO Write an implementation for this method declaration
-			return 0;
-		}
+			final double kph2mph = 0.62137119223733;
+			if (kilometersPerHour < 0.0) {
+				return -1;
+			} //end if block
+			else {
+				double mph = Math.round(kilometersPerHour * kph2mph);
+				return (long)mph;
+			} // end else block
+		} //end toMilesPerHour method
 
 		/**
 		 * 1.B Speed Converter - Print Conversion
@@ -42,10 +49,16 @@ public class EvaluationService {
 		 */
 		public static String printConversion(double kilometersPerHour) {
 			// TODO Write an implementation for this method declaration
-			return null;
-		}
-	}
-
+			if (kilometersPerHour < 0.0) {
+				return "Invalid Value";
+			} //end if block
+			else {
+				long mph = SpeedConverter.toMilesPerHour(kilometersPerHour);
+				return String.valueOf(kilometersPerHour) + " km/h = " + String.valueOf(mph) + " mi/h";
+			} //end else block
+		} //end printConversion method
+	} //end SpeedConverter class
+		
 	/**
 	 * 2. MegaBytes and KiloBytes
 	 * 
@@ -68,8 +81,18 @@ public class EvaluationService {
 	 */
 	public String printMegaBytesAndKiloBytes(int XX) {
 		// TODO Write an implementation for this method declaration
-		return null;
-	}
+		final int MegaByte = 1024;
+		int MB, KB = 0;
+		if (XX < 0) {
+			return "Invalid Value";
+		} //end if block
+		else {
+			MB = XX / MegaByte; // integer division
+			KB = XX % MegaByte; // modulo division to get remainder as KB
+			return String.valueOf(XX) + " KB = " + String.valueOf(MB)+ " MB and " + String.valueOf(KB) + " KB";			
+		} //end else block			
+		//return null;
+	} //end printMegaBytesAndKiloBytes method
 
 	/**
 	 * 3. Barking Dog
@@ -93,7 +116,7 @@ public class EvaluationService {
 	public boolean shouldWakeUp(boolean isBarking, int hourOfDay) {
 		// TODO Write an implementation for this method declaration
 		return false;
-	}
+	} //end of shouldWakeUp method
 
 	/**
 	 * 4. DecimalComparator
