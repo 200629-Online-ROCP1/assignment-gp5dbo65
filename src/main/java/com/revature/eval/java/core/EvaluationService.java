@@ -321,33 +321,26 @@ public class EvaluationService {
 	 * invalid value.
 	 */
 	public int sumFirstAndLastDigit(int num) {
-		// TODO Write an implementation for this method declaration
-		int sum = 0;
-//		System.out.println("*** STILL NEED TO FIX sumFirstAndLastDigit method!!!!! ***");
-		if (num < 0) {						//is parm negative
-			return -1;						//yes - return error code
+
+		int sum, firstDigit, lastDigit = 0;
+
+		if (num < 0) {								//is parm negative
+			return -1;								//yes - return error code
 		} //end if block
-		else if (num == 0) {				//is parm = 0
-			return 0;						//yes - return 0
+
+		String strNumber = String.valueOf(num);		//convert input parm to String
+		if (strNumber.length() == 1) {				//is input parm a single digit
+			sum = num + num;						//double the original value and return it
+			return sum;								//return num + num
+		} //end if block
+		else {										//Sandy Moose gave me the suggestion to use the Character method .getNumericValue()
+													//rather than breaking up the string into a char array
+			firstDigit = Character.getNumericValue(strNumber.charAt(0));	//load value of 1 digit
+			lastDigit = Character.getNumericValue(strNumber.charAt(strNumber.length()-1));	//load value of last digit
+			sum = firstDigit + lastDigit;			//add the digits together and return that value
+			return sum;
 		} //end else block
 		
-//		System.out.println("num = " + num);
-		String str = String.valueOf(num);
-//		System.out.println("str = " + str + " and has length of " + str.length());
-		if (str.length() == 1) {
-			num += num;
-//			System.out.println("single digit passed, sum = " + num);
-			//return num += num				//return num + num
-		} //end if block
-		else {
-			int i = Integer.valueOf(str.charAt(0));
-			int j = Integer.valueOf(str.charAt(str.length()-1));
-			sum = i + j;
-//			System.out.println("num = " + num + " first digit = " + i + " second digit = " + j + " sum = " + sum);
-			
-		} //end else block
-		
-		return 0;
 	} //end sumFirstAndLastDigit
 
 	/**
@@ -358,19 +351,20 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 
-		/* Here's the code with the StringBuilder
+		String revstr = "";							//initialize the string
+
+		/* Here's the code solution using StringBuilder
+
 		StringBuilder sb = new StringBuilder(string);
 		sb.reverse();
 		String revstr = sb.toString();
 		System.out.println("string = " + string);
 		System.out.println("rev str = " + revstr);
+		
 		*/
 		
-		char ch[] = string.toCharArray();			//load input sting into a char array
-		String revstr = "";							//initialize the string
-		
-		for (int i = ch.length-1; i >= 0; i--) {	//go through the character array in reverse order
-			revstr += ch[i];						//add the current character to the string
+		for (int i = string.length()-1; i >= 0; i--) {	//go through the String in reverse order
+			revstr += string.charAt(i);				//append the character located at the current string index to end of the string
 			} //end for loop
 		return revstr;								//return reversed string to caller
 	} //end reverse method 
@@ -604,7 +598,7 @@ public class EvaluationService {
 		}//end else-if block
 
 		try {												//don't need this check unless you are doing the individual replace steps
-			double d = Double.parseDouble(tempPhnNum);		//test to see if the string is numeric have to use double
+			Double.parseDouble(tempPhnNum);					//test to see if the string is numeric have to use double
 			return tempPhnNum;								//is Numeric - return clean phone number string
 		} //end try block 
 		catch (NumberFormatException nfe) {					//NumberFormatException thrown
@@ -641,8 +635,44 @@ public class EvaluationService {
 	 * a number is an Armstrong number.
 	 */
 	public boolean isArmstrongNumber(int input) {
-		return false;
-	}
+		
+		int total = 0, digit = 0;
+		String strNumber = String.valueOf(input);		//store input integer parm as a String
+		
+		if (strNumber.length() == 1) {
+			return true;								//all single digits are Armstrong numbers
+		} //end if block
+		
+		for (int i = 0; i <= strNumber.length()-1; i++) {			//loop thru the String to process the individual digits
+			digit = Character.getNumericValue(strNumber.charAt(i));	//Sandy Moose gave me the suggestion to do it this way
+			total += raiseToPowerOfN(digit, strNumber.length());	//add calculated power of digit to running total
+		} //end for loop
+
+		if (total == input) {									//compare calculated total to actual input value
+			return true;										//equal - return isArmstrongNumber is true
+		} //end if block
+		else {
+			return false;										//not equal - return isArmstrongNumber is false
+		} //end else block
+		
+	} //end isArmstrongNumnber
+
+	public int raiseToPowerOfN(int base, int power) {
+		
+		if (power == 0) {					//anything raised to the 0 power is 1!
+			return 1;			
+		} else if (power == 1) {			//anything raised to the 1st power is itself!
+			return base;		
+		} //end else if block
+		
+		int intProduct = base;					//initialize running total to value of base
+		for (int i = power-1; i > 0; i--) {		//loop until counter reaches 0
+			intProduct *= base;					//accumulate running total of raising base to the Nth power
+		} //end for loop
+		return intProduct;						//return base^power
+		
+	} //end of raiseToPowerOfN method
+
 
 	/**
 	 * 17. Prime Factors
@@ -670,8 +700,48 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int k) {
 		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+		int finalPrime = 0;
+
+		if (k <= 0) {													//is input parm <= 0
+			throw new IllegalArgumentException(Integer.toString(k)); 	//yes - throw IllegalArgumentException
+		}
+		
+		switch (k) {
+			case 1 : return 2;		//1st prime
+			case 2 : return 3;		//2nd prime
+			case 3 : return 5;		//3rd prime
+			case 4 : return 7;		//4th prime
+			case 5 : return 11;		//5th prime
+			case 6 : return 13;		//6th prime
+			case 7 : return 17;		//7th prime
+			case 8 : return 19;		//8th prime
+			case 9 : return 23;		//9th prime
+
+			default :
+  				int nextInteger, nextPrime;
+				for (nextInteger = 2, nextPrime = 0; nextPrime < k; nextInteger++) {
+					if (isPrime(nextInteger)) {
+						nextPrime++;
+					} //end if block
+				} //end for loop
+				finalPrime = nextInteger-1;
+		} //end switch
+		return finalPrime;			//return Nth prime
+		
+	} //end calculateNthPrime
+	
+	public boolean isPrime(int num) {
+		
+		int i =2;
+		while (i <= num/2) {
+			if (num % i == 0) {
+				return false;
+			} //end if
+			i++;
+		} //end while loop
+		return true;
+
+	} //end isPrime method
 
 	/**
 	 * 19. Pangram

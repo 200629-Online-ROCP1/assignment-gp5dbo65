@@ -507,6 +507,7 @@ public class EvaluationServiceTest {
 
 	@Test
 	public void testSixthPrime() {
+//		assertThat(evaluationService.calculateNthPrime(10), is(27));
 		assertThat(evaluationService.calculateNthPrime(6), is(13));
 	}
 
