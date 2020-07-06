@@ -1,5 +1,8 @@
 package com.revature.eval.java.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -616,9 +619,38 @@ public class EvaluationService {
 	 * free: 1
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
-	}
+
+		// TODO need to try the regex "\w+" to build the word array from string (David Jafferian)
+		String wordArray[] = string.replace("\n", "").replace(",", " ").split(" "); //get rid of commas and new lines
+		Map<String, Integer> wm = new HashMap<String, Integer>();
+		boolean firstTime = true;
+		String key;
+		Integer count;
+		
+		for (String word : wordArray) {					//process each String in the String array
+			key = word;									//assign initial value to key
+			count = 0;									//assign initial value to key counter
+			if (firstTime) {							//is this the first time thru the for-each loop?
+				wm.put(key, count+1);					//yes - add key and counter to word Map
+				firstTime = false;						//set firstTime to false for the rest of the loop
+				continue; 								//exit and loop back
+			} //end if block
+			if (wm.containsKey(key)) {					//check map for current key
+				count = wm.get(key);					//set value of count
+														//NOT SURE IF I REALLY NEED TO DO THIS CHECK
+				if (count == null) {					//check to see if count is null
+					count = 0;							//yes - set it to zero
+				} //end if block
+				wm.put(key, count+1);					//load word Map with updated count value
+			} //end if block
+			else {										//current key is not in Map
+					count = 0;							//initialize counter
+					wm.put(key, count+1);				//load word Map with new entry
+			} //end else block
+			
+		} //end for-each loop
+		return wm;										//return Map
+	} //end wordCount method
 
 	/**
 	 * 16. Armstrong Number
@@ -683,9 +715,22 @@ public class EvaluationService {
 	 * Note that 1 is not a prime number.
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
-	}
+
+		long numberL = l;						//copy the input parm
+		List<Long> pfList = new ArrayList<>();	//create a List collection of type <Long>
+
+		for (Long i = 2L; i < numberL; i++) {	//find the prime factors of numberL
+			while (numberL % i == 0) {			//is remander 0?
+				numberL = numberL / i;			//divide numberL by prime factor
+				pfList.add(i);					//add the current prime factor to the List
+			} //end while loop
+		} // end for loop
+		if(numberL >= 2) {						//is the current prime factor >= 2?
+			pfList.add(numberL);				//yes - add the final prime factor to the List
+		} //end if block
+
+		return pfList;
+	} //end calculatePrimeFactorsOf method
 
 	/**
 	 * 18. Calculate Nth Prime
@@ -699,7 +744,7 @@ public class EvaluationService {
 	 * numbers, pretend they don't exist and implement them yourself.
 	 */
 	public int calculateNthPrime(int k) {
-		// TODO Write an implementation for this method declaration
+
 		int finalPrime = 0;
 
 		if (k <= 0) {													//is input parm <= 0
