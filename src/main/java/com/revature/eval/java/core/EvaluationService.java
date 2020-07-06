@@ -2,10 +2,11 @@ package com.revature.eval.java.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class EvaluationService {
 
@@ -801,9 +802,30 @@ public class EvaluationService {
 	 * insensitive. Input will not contain non-ASCII symbols.
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
-	}
+
+		if (string.length() == 0) {			//is the string empty?
+			return false;					//yes - empty string, return false
+		} //end if block
+				
+		String parseString = string.replace(" ", "");	//remove blanks from input string
+		if (parseString.length() < 26) {				//is the string length >= 26 characters
+			return false;								//no - must have 26 or more characters - return false
+		} //end if block
+		
+		Set <Character> charHS = new HashSet<>();		//create Character HashSet to store the characters
+		char[] chars = parseString.toCharArray();		//load string into a character array
+
+		for (char ch : chars) {							//process all the characters in the array
+			charHS.add(ch);								//add character to HashSet - ignore duplicates	
+		} //end for loop
+
+		if (charHS.size() == 26) {	//are there 26 characters in the HashSet
+			return true;			//yes - return true
+		} else {
+			return false;			//no - return false
+		} //end else block
+		
+	} //end isPangram method
 
 	/**
 	 * 20. Sum of Multiples 
@@ -817,7 +839,29 @@ public class EvaluationService {
 	 * The sum of these multiples is 78.
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		return 0;
+		
+		int limit = i;
+		int total = 0;
+		int factor = 0;
+		int counter = 1;
+
+		Set <Integer> intHS = new HashSet<>();	//create Integer HashSet to store the factors
+		
+		for (int num : set) {				//process each Integer from the set
+			factor = num;					//initialize factor
+			counter = 1;					//initialize counter
+			do {
+				intHS.add(factor);			//add current factor to HashSet
+				counter++;					//increment the counter
+				factor = num * counter;		//bump up to next factor and test against limit
+			} while (factor < limit);
+		} //end for-each loop
+
+		total = 0;
+		for (int num : intHS) {
+			total += num;
+		} //end for-each loop
+		return total;
 	}
 	
 	/**

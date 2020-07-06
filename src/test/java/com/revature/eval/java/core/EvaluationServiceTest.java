@@ -592,8 +592,8 @@ public class EvaluationServiceTest {
 		int output = evaluationService.getSumOfMultiples(100, set);
 		assertEquals(4950, output);
 	}
-	
-	
+ 	
+
 	/*******************************************************************
 	 * Question 21
 	 ******************************************************************/
